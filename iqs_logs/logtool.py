@@ -14,23 +14,23 @@ def parse_line(line):
 
   if match:
     return Row(
-        trace_token  = match.group(1),
-        ip_address   = match.group(2),
-        cn_header = match.group(4),
-        entity       = match.group(5),
+        trace_token   = match.group(1),
+        ip_address    = match.group(2),
+        cn_header     = match.group(4),
+        entity        = match.group(5),
         timestamp     = match.group(6),
-        method       = match.group(7),
-        endpoint     = match.group(8),
-        protocol     = match.group(9),
-        response_code     = match.group(10),
-        response_size    = match.group(11))
+        method        = match.group(7),
+        endpoint      = match.group(8),
+        protocol      = match.group(9),
+        response_code = match.group(10),
+        response_size = match.group(11))
 
 
 def access_logs_to_parquet(log_path, log_output_path):
   sc = SparkContext()
   sqlContext = SQLContext(sc)
 
-  rdd = sc.textFile(log_path).map(lambda line: parse_line(line))
+  rdd = sc.textFile(log_path).map(parse_line)
   df = sqlContext.createDataFrame(rdd, schemas.accesslog())
   df.write.parquet(log_output_path, mode='append')
 

@@ -105,3 +105,7 @@ venv.bak/
 
 # IntelliJ
 *.idea/
+
+# Log Files
+accesslog.log
+accesslog.parquet/
